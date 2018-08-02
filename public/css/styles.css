@@ -1,0 +1,13 @@
+.paginacion {
+    margin: 0 auto;
+}
+
+.separador {
+    height: 1.2rem;
+}
+
+.pagination {
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
