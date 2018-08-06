@@ -21,7 +21,7 @@ class ProductsTableSeeder extends Seeder
 
         $categories = factory(Category::class, 5)->create();
         $categories->each(function($c){
-            $products = factory(Product::class, 20)->make();
+            $products = factory(Product::class, 10)->make();
             $c->products()->saveMany($products);
 
             $products->each(function($p){

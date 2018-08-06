@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>@yield('title', 'Fiction Commerce')</title>
+    <title>@yield('title', config('app.name'))</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -23,7 +23,7 @@
         <div class="container">
             <div class="navbar-translate">
                 <a class="navbar-brand" href="{{url('/')}}">
-                    Fiction Commerce </a>
+                    {{config('app.name')}} </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="navbar-toggler-icon"></span>
@@ -58,6 +58,7 @@
                             
                             @if(auth()->user()->admin)
                                 <a href="{{url('admin/products')}}" class="dropdown-item">Gestionar productos</a>
+                                <a href="{{url('admin/categories')}}" class="dropdown-item">Gestionar categorías</a>
                             @endif                            
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -89,6 +90,8 @@
     <script src="{{ asset('js/plugins/jquery.sharrre.js') }}" type="text/javascript"></script>
     <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('js/material-kit.js?v=2.0.4') }}" type="text/javascript"></script>
+    <!-- Busqueda predictiva -->
+    @yield('scripts')
 </body>
 
 </html>

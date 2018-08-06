@@ -91,7 +91,14 @@
                         </tr>
                         @endforeach
                     </tbody>                            
+                    
                 </table>
+
+                <div class="row">
+                    <div class="col-md-6" style="float:left;">
+                        <h4 style="float:left;"><strong>El total de tú compra es: </strong>{{ auth()->user()->cart->total }}</h4>
+                    </div>
+                </div>
 
                 <form action="{{ route('ordenar') }}" method="POST">
                     {{csrf_field()}}

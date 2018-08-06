@@ -24,7 +24,8 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('admin.products.create');//Formulario de registro
+        $categories = Category::orderBy('name')->get();
+        return view('admin.products.create')->with(compact('categories'));//Formulario de registro
     }
 
     public function store(Request $request)
@@ -32,7 +33,8 @@ class ProductController extends Controller
         $rules = [
             'name' => 'required|min:3|max:100',
             'description' => 'required|max:200',
-            'price' => 'required|numeric|min:0'
+            'price' => 'required|numeric|min:0',
+            'category_id' => 'required'
         ];
 
         $messages = [
@@ -43,7 +45,8 @@ class ProductController extends Controller
             'description.max' => 'La descripción no puede ser mayor a 200 carácteres',
             'price.required' => 'El campo precio es obligatorio',
             'price.numeric' => 'El precio tiene que ser númerico',
-            'price.min' => 'El precio debe ser mayor a 0'
+            'price.min' => 'El precio debe ser mayor a 0',
+            'category_id' => 'La categoría es obligatoria'
         ];
 
         $this->validate($request, $rules, $messages);
@@ -54,6 +57,7 @@ class ProductController extends Controller
         $product->description = $request->input('description');
         $product->long_description = $request->input('long_description');
         $product->price = $request->input('price');
+        $product->category_id = $request->input('category_id');    
         $product->save();//Aquí se hace el insert a la tabla de productos
 
         return redirect('/admin/products')->with('status', 'Se añadio correctamente el producto!');
@@ -61,8 +65,9 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product_only = Product::find($id);
-        return view('admin.products.edit')->with('product', $product_only);
+        $product = Product::find($id);
+        $categories = Category::orderBy('name')->get();
+        return view('admin.products.edit')->with(compact('product','categories'));
     }
 
     public function update(Request $request, $id)
@@ -89,6 +94,7 @@ class ProductController extends Controller
         $product_only->name = $request->input('name');
         $product_only->description = $request->input('description');
         $product_only->long_description = $request->input('long_description');
+        $product_only->category_id = $request->input('category_id');
         $product_only->price = $request->input('price');
         
         if($product_only->save()){

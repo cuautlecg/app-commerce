@@ -21,8 +21,8 @@ class CreateProductsTable extends Migration
             $table->text('long_description')->nullable();
             $table->float('price');
             //Llave foranea
-            $table->integer('category_id')->unsigned()->nullable();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->unsignedInteger('category_id')->nullable();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

@@ -1,15 +1,9 @@
-@extends('layouts.app') 
-
-@section('body-class', 'landing-page sidebar-collapse') 
-
-@section('title', 'Bienvenido a Fiction Commerce')
-
-@section('content')
+@extends('layouts.app') @section('body-class', 'landing-page sidebar-collapse') @section('title', 'Bienvenido a Fiction Commerce') @section('content')
 <div class="page-header header-filter" data-parallax="true" style="background-image: url('{{asset('img/profile_city')}}.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h1 class="title">Bienvienido a "Fiction-Commerce"</h1>
+                <h1 class="title">Bienvenido a Cuautle Commerce</h1>
                 <h4>Tú mejor elección a la hora de comprar en línea.</h4>
                 <br>
                 <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn btn-danger btn-raised btn-lg">
@@ -36,8 +30,7 @@
                                 <i class="material-icons">chat</i>
                             </div>
                             <h4 class="info-title">Contacto frecuente</h4>
-                            <p>Puedes contactarnos cualquier día  cualquier hora para poder aclarar tus dudas resultantes con la plataforma
-                                o cualquier otra cosa que te interese.</p>
+                            <p>Puedes contactarnos cualquier día cualquier hora para poder aclarar tus dudas resultantes con la plataforma o cualquier otra cosa que te interese.</p>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -61,37 +54,43 @@
                 </div>
             </div>
         </div>
+
         <div class="section text-center">
-            <h2 class="title">Productos disponibles</h2>
+            <h2 class="title">Vista nuestras categorías disponibles</h2>
+
+            <div class="search-form">
+                <form action="{{route('search')}}" class="form-inline" type="GET">
+                    <input type="text" name="query" id="query" placeholder="Busca un producto" class="form-control">
+                    <button class="btn btn-primary btn-just-icon" type="submit">
+                        <i class="material-icons">search</i>
+                    </button>
+                </form>
+            </div>
+
             <div class="team">
                 <div class="row">
-                    @foreach($products as $product)
-                        <div class="col-md-4">
-                            <div class="card team-player">
-                                <div class="card card-plain">
-                                    <div class="col-md-6 ml-auto mr-auto">
-                                        <a href="{{route('show-product', [$product->id])}}">
-                                                <img src="{{ $product->featured_image_url }}" alt="Thumbnail Image" class="img-raised rounded-circle img-fluid">
-                                        </a>                                        
-                                    </div>
-                                    <h4 class="card-title">{{$product->name}}
-                                        <br>
-                                        <small class="card-description text-muted">{{ $product->category ? $product->category->name : 'General' }}</small>
-                                    </h4>
-                                    <div class="card-body">
-                                        <p class="card-description">{{$product->description}}
-                                    </div>
+                    @foreach($categories as $category)
+                    <div class="col-md-4">
+                        <div class="card team-player">
+                            <div class="card card-plain">
+                                <div class="col-md-6 ml-auto mr-auto">
+                                    <a href="{{route('show-category', [$category->id])}}">
+                                            <img src="{{ $category->featured_image_url }}" alt="Thumbnail Image" class="img-raised rounded-circle img-fluid">
+                                        </a>
+                                </div>
+                                <h4 class="card-title">{{$category->name}}
+                                </h4>
+                                <div class="card-body">
+                                    <p class="card-description">{{$category->description}}
                                 </div>
                             </div>
                         </div>
+                    </div>
                     @endforeach
                 </div>
                 <hr>
-                <nav aria-label="Page navigation example">
-                    {{$products->links()}}
-                </nav>
                 <div class="row">
-                    
+
                 </div>
             </div>
         </div>
@@ -132,6 +131,28 @@
         </div>
     </div>
 </div>
+@endsection
 
-
+@section('scripts')
+    <script src="{{asset('js/typeahead.bundle.min.js')}}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //
+            var products = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                prefetch: '{{url('/products/json')}}'
+            });
+        
+            //Inicializar typeheand sobre el input de busqueda
+            $('#query').typeahead({
+                hint: true,
+                highlight: true,
+                minLenght: 1
+            }, {
+                name: 'products',
+                source: products
+            });
+        });
+    </script>
 @endsection
